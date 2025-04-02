@@ -1,21 +1,5 @@
 pub fn rev_str(input: &str) -> String {
-    let mut result = String::from("");
-
-    for word in input.split_whitespace().rev() {
-        let mut hld = String::from("");
-
-        if result.len() != 0 {
-            result.push_str(" ");
-        }
-
-        for c in word.chars() {
-            hld.insert(0, c);
-        }
-
-        result.push_str(&hld);
-    }
-
-    result
+    input.chars().rev().collect()
 }
 
 #[cfg(test)]
