@@ -26,53 +26,39 @@ pub fn delete_and_backspace(s: &mut String) {
 
 pub fn do_operations(v: &mut [String]) {
     for word in v {
-        let mut eq = String::new();
-        let mut hld: i32 = 0;
-        let mut neg = false;
-        
+        let mut hld = String::from("");
+        let mut hld1 = String::from("");
+        let mut op = String::from("");
+        let mut check = false;
+
         for c in word.chars() {
-            if c == '+' {
-                if neg {
-                    hld *= -1
-                }
-                eq = "add".to_string();
-                continue;
-            }else if c == '-' {
-                if eq.len() == 0 {
-                    if hld > 0 {
-                        eq = "subtract".to_string();
-                        continue;
-                    } else {
-                        if neg {
-                            hld *= -1;
-                            continue
-                        } 
-                    }
-                } else {
-                    neg = true;
-                    continue;
-                }
+            if c == '-' && hld.len() > 0 {
+                op = "-".to_string();
+                check = true;
+                continue
+            } else if c == '+' && hld.len() > 0 {
+                op = "+".to_string();
+                check = true;
+                continue
             }
 
-            if eq == "add" {
-                let mut n: i32 = c as i32 - '0' as i32;
-                if neg {
-                    n *= -1;
-                }
-                hld += n;
-                continue;
-            } else if eq == "subtract" {
-                let mut n: i32 = c as i32 - '0' as i32;
-                if neg {
-                    n *= -1;
-                }
-                hld -= n;
-                continue;
+            if check {
+                hld1.push(c);
+                continue
+            } else {
+                hld.push(c);
+                continue
             }
-
-            hld = (hld * 10) + (c as i32 - '0' as i32);
         }
-        *word = hld.to_string();
+
+        let n1: i32 = hld.parse().expect("error");
+        let n2: i32 = hld1.parse().expect("error");
+
+        if op == "+".to_string() {
+            *word = (n1 + n2).to_string();
+        } else if op == "-".to_string() {
+            *word = (n1 - n2).to_string();
+        }
     }
 }
 
