@@ -28,22 +28,44 @@ pub fn do_operations(v: &mut [String]) {
     for word in v {
         let mut eq = String::new();
         let mut hld: i32 = 0;
+        let mut neg = false;
         
         for c in word.chars() {
             if c == '+' {
+                if neg {
+                    hld *= -1
+                }
                 eq = "add".to_string();
                 continue;
             }else if c == '-' {
-                eq = "subtract".to_string();
-                continue;
+                if eq.len() == 0 {
+                    if hld > 0 {
+                        eq = "subtract".to_string();
+                        continue;
+                    } else {
+                        if neg {
+                            hld *= -1;
+                            continue
+                        } 
+                    }
+                } else {
+                    neg = true;
+                    continue;
+                }
             }
 
             if eq == "add" {
-                let n: i32 = c as i32 - '0' as i32;
+                let mut n: i32 = c as i32 - '0' as i32;
+                if neg {
+                    n *= -1;
+                }
                 hld += n;
                 continue;
             } else if eq == "subtract" {
-                let n: i32 = c as i32 - '0' as i32;
+                let mut n: i32 = c as i32 - '0' as i32;
+                if neg {
+                    n *= -1;
+                }
                 hld -= n;
                 continue;
             }
