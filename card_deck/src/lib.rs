@@ -76,5 +76,5 @@ pub fn winner_card(card: &Card) -> bool {
         suit: Suit::Spade,
         rank: Rank::Ace,
     };
-    winner == *card
+    &winner == card
 }
