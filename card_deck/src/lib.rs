@@ -71,10 +71,10 @@ pub struct Card {
     pub rank: Rank,
 }
 
-pub fn winner_card(card: Card) -> bool {
+pub fn winner_card(card: &Card) -> bool {
     let winner = Card {
         suit: Suit::Spade,
         rank: Rank::Ace,
     };
-    winner == card
+    winner == *card
 }
