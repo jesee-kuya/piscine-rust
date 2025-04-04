@@ -17,7 +17,7 @@ mod tests {
     }
 
     fn test_sum() {
-        let a = (1..=10)._;
+        let a = (1..=10).collect();
         let b = [_];
         assert_eq!(sum(a), 55);
         assert_eq!(sum[b], 50);
