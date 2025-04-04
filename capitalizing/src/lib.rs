@@ -9,7 +9,7 @@ pub fn capitalize_first(input: &str) -> String {
 }
 
 pub fn title_case(input: &str) -> String {
-    let words = input.split_whitespace();
+    let words = input.split_ascii_whitespace();
     let mut s = String::from("");
 
     for word in words {
