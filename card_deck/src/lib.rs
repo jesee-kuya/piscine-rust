@@ -34,7 +34,7 @@ impl Suit {
             1 => Suit::Diamond,
             2 => Suit::Spade,
             4 => Suit::Club,
-            3_u8 | 5_u8..=u8::MAX => todo!(),
+            _ => panic!("invalid"),
         }
     }
 }
@@ -60,7 +60,7 @@ impl Rank {
             12 => Rank::Queen,
             13 => Rank::King,
             2..=10 => Rank::Number(value),
-            0_u8 | 14_u8..=u8::MAX => todo!(),
+            _ => panic!("invalid"),
         }
     }
 }
