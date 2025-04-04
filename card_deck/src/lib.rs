@@ -1,6 +1,6 @@
 use rand::Rng;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Suit {
     Heart,
     Diamond,
@@ -8,7 +8,7 @@ pub enum Suit {
     Club,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Rank {
     Ace,
     King,
@@ -65,16 +65,16 @@ impl Rank {
     }
 }
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Card {
     pub suit: Suit,
     pub rank: Rank,
 }
 
-pub fn winner_card(card: &Card) -> bool {
+pub fn winner_card(card: Card) -> bool {
     let winner = Card {
         suit: Suit::Spade,
         rank: Rank::Ace,
     };
-    &winner == card
+    winner == card
 }
