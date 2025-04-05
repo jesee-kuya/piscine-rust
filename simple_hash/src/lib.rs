@@ -2,12 +2,13 @@ use std::collections::HashMap;
 
 pub const SENTENCE: &str = "this is a very basic sentence with only a few repetitions. once again this is very basic but it should be enough for basic tests";
 
-pub fn word_frequency_counter(words: Vec<&str>) -> HashMap<&str, usize> {
+pub fn word_frequency_counter<'a>(words: &'a Vec<&'a str>) -> HashMap<&'a str, usize> {
     let mut hmap = HashMap::new();
 
-    for word in words {
-        *hmap.entry(word).or_insert(0 as usize) += 1 as usize;
+    for &word in words { 
+        *hmap.entry(word).or_insert(0) += 1; 
     }
+    
     hmap
 }
 
@@ -23,7 +24,7 @@ mod tests {
     fn it_works() {
         let words = SENTENCE.split_ascii_whitespace().collect::<Vec<_>>();
         let mut hmap = HashMap::new();
-        let frequency_count = word_frequency_counter(words);
+        let frequency_count = word_frequency_counter(&words);
         hmap.insert("tests", 1);
         hmap.insert("with", 1);
         hmap.insert("this", 2);
