@@ -9,17 +9,28 @@ pub fn capitalize_first(input: &str) -> String {
 }
 
 pub fn title_case(input: &str) -> String {
-    let normalized_input = input.split_whitespace().collect::<Vec<&str>>().join(" ");
+    let mut s = String::new();
+    let mut hld = String::new();
 
-    let words = normalized_input.split_whitespace();
-    let mut s = String::from("");
-
-    for word in words {
-        s.push_str(&capitalize_first(word));
-        s.push(' ');
+    for c in input.chars() {
+        if c == ' ' {
+            if hld.len() > 0 {
+                s.push_str(&capitalize_first(&hld));
+                s.push(c); 
+                hld.clear(); 
+            } else {
+                s.push(c); 
+            }
+        } else {
+            hld.push(c); 
+        }
     }
 
-    s.trim().to_string()
+    if hld.len() > 0 {
+        s.push_str(&capitalize_first(&hld));
+    }
+
+    s
 }
 
 
