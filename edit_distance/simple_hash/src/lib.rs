@@ -11,6 +11,10 @@ pub fn word_frequency_counter(words: Vec<&str>) -> HashMap<&str, usize> {
     hmap
 }
 
+pub fn nb_distinct_words(frequency_count: &HashMap<&str, usize>) -> usize {
+    frequency_count.len()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -40,5 +44,6 @@ mod tests {
         hmap.insert("a", 2);
         hmap.insert("repetitions.", 1);
         assert_eq!(frequency_count, hmap);
+        assert_eq!(nb_distinct_words(&frequency_count), 20);
     }
 }
