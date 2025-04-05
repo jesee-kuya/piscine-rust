@@ -13,7 +13,7 @@ pub fn title_case(input: &str) -> String {
     let mut hld = String::new();
 
     for c in input.chars() {
-        if c == ' ' {
+        if c == ' ' || c == '\t' {
             if hld.len() > 0 {
                 s.push_str(&capitalize_first(&hld));
                 s.push(c); 
