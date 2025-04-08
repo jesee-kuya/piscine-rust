@@ -15,7 +15,7 @@ pub fn cipher(original: &str, ciphered: &str) -> Result<(), CipherError> {
 }
 
 pub fn atbash(s: &str) -> String {
-    let s1 = String::from("");
+    let mut s1 = String::from("");
     for c in s.chars() {
         if c >= 'a' && c <= 'z' {
             let n = (122 - c as u8) + 97;
