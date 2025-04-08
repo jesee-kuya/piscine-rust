@@ -8,14 +8,8 @@ pub enum Security {
 
 pub fn fetch_data(server: Result<&str, &str>, security_level: Security) -> String {
     match security_level {
-        Security::Unknown => match server {
-            Ok(file) => file.to_string(),
-            Err(_) => Result::unwrap(Err(server)),
-        },
-        Security::Message => match server {
-            Ok(file) => file.to_string(),
-            Err(_) => panic!("ERROR: program stops"),
-        },
+        Security::Unknown => server.unwrap().to_string(), // Will panic if Err, just like before
+        Security::Message => server.expect("ERROR: program stops").to_string(),
         Security::Warning => match server {
             Ok(file) => file.to_string(),
             Err(_) => "WARNING: check the server".to_string(),
@@ -30,6 +24,7 @@ pub fn fetch_data(server: Result<&str, &str>, security_level: Security) -> Strin
         },
     }
 }
+
 
 #[cfg(test)]
 mod tests {
