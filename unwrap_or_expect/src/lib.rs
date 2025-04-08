@@ -11,12 +11,12 @@ pub fn fetch_data(server: Result<&str, &str>, security_level: Security) -> Strin
         Security::Unknown => server.unwrap().to_string(), 
         Security::Message => server.expect("ERROR: program stops").to_string(),
         Security::Warning => match server {
-            Ok(file) => file.to_string(),
-            Err(_) => "WARNING: check the server".to_string(),
+            Ok(file) => format!("{file}"),
+            Err(_) => format!("WARNING: check the server"),
         },
         Security::NotFound => match server {
-            Ok(file) => file.to_string(),
-            Err(e) => "Not found: ".to_string() + e,
+            Ok(file) => format!("{file}"),
+            Err(e) => format!("Not found: {}", e),
         },
         Security::UnexpectedUrl => match server {
             Ok(file) => panic!("{file}"),
