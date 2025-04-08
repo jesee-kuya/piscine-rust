@@ -8,7 +8,7 @@ pub enum Security {
 
 pub fn fetch_data(server: Result<&str, &str>, security_level: Security) -> String {
     match security_level {
-        Security::Unknown => server.unwrap().to_string(), // Will panic if Err, just like before
+        Security::Unknown => server.unwrap().to_string(), 
         Security::Message => server.expect("ERROR: program stops").to_string(),
         Security::Warning => match server {
             Ok(file) => file.to_string(),
