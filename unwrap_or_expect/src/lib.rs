@@ -10,7 +10,7 @@ pub fn fetch_data(server: Result<&str, &str>, security_level: Security) -> Strin
     match security_level {
         Security::Unknown => match server {
             Ok(file) => file.to_string(),
-            Err(_) => panic!(),
+            Err(_) => Result::unwrap(Err(server)),
         },
         Security::Message => match server {
             Ok(file) => file.to_string(),
