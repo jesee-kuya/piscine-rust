@@ -11,7 +11,7 @@ pub struct FormError {
 impl FormError {
     pub fn new(field_name: &'static str, field_value: String, err: &'static str) -> Self {
         let mut map = HashMap::new();
-        map.insert(format!("{field_name}"), format!("{field_value}"));
+        map.insert(field_name.to_string(), field_value.to_string());
         let utc = format!("{}",Utc::now().format("%Y-%m-%d %H:%M:%S"));
 
         Self {
