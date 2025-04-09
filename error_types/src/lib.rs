@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+pub use std::collections::HashMap;
 pub use chrono::{ Utc };
 
 #[derive(Debug, Eq, PartialEq)]
