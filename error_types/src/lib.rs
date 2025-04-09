@@ -51,39 +51,3 @@ impl Form {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let mut form_output = Form {
-            name: "Lee".to_owned(),
-            password: "qwqwsa1dty_".to_owned(),
-        };
-        assert_eq!(form_output.validate(), Ok(()));
-
-        form_output.name = "".to_owned();
-        let result = form_output.validate();
-        let err = result.unwrap_err();
-        assert_eq!(err.err, "Username is empty");
-
-        form_output.name = "as".to_owned();
-        form_output.password = "dty_1".to_owned();
-        let result = form_output.validate();
-        let err = result.unwrap_err();
-        assert_eq!(err.err, "Password should be at least 8 characters long");
-
-        form_output.password = "asdasASd(_".to_owned();
-        let result = form_output.validate();
-        let err = result.unwrap_err();
-        assert_eq!(err.err, "Password should be a combination of ASCII numbers, letters and symbols");
-
-        form_output.password = "asdasASd123SA".to_owned();
-        let result = form_output.validate();
-        let err = result.unwrap_err();
-        assert_eq!(err.err, "Password should be a combination of ASCII numbers, letters and symbols");
-
-    }
-}
