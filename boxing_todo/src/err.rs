@@ -16,7 +16,7 @@ impl Display for ParseErr {
 impl Error for ParseErr {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
-            ParseErr::Malformed(e) => Some(e.as_ref()),
+            ParseErr::Malformed(_) => Some(self),
             ParseErr::Empty => None,
         }
     }
