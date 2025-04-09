@@ -1,17 +1,15 @@
-pub use std::collections::HashMap;
 pub use chrono::{ Utc };
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct FormError<'a> {
-    pub form_values: HashMap<&'a str, String>,
+    pub form_values: (&'a str, String),
     pub date: String,
     pub err: String,
 }
 
 impl FormError<'_> {
     pub fn new(field_name: &'static str, field_value: String, err: &'static str) -> Self {
-        let mut map = HashMap::new();
-        map.insert(field_name, field_value.to_string());
+        let map = (field_name, field_value.to_string());
         let utc = format!("{}",Utc::now().format("%Y-%m-%d %H:%M:%S"));
 
         Self {
