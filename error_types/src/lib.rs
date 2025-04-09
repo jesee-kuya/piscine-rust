@@ -17,7 +17,7 @@ impl FormError {
         Self {
             form_values: map,
             date: utc,
-            err: err.to_string(),
+            err: err.to_owned(),
         }
     }
 }
