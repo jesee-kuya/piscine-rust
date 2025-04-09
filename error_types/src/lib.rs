@@ -4,7 +4,7 @@ pub use chrono::{ Utc };
 pub struct FormError<'a> {
     pub form_values: (&'a str, String),
     pub date: String,
-    pub err: String,
+    pub err: &'a str,
 }
 
 impl FormError<'_> {
@@ -15,7 +15,7 @@ impl FormError<'_> {
         Self {
             form_values: map,
             date: utc,
-            err: err.to_owned(),
+            err: err,
         }
     }
 }
