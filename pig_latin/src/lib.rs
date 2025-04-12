@@ -1,28 +1,26 @@
 pub fn pig_latin(text: &str) -> String {
     let mut end = String::new();
-    let mut s = String::new();
-    let mut check = true;
+    let mut start = String::new();
+    let mut found_vowel = false;
+    let mut last = text.chars().next();
+
     for c in text.chars() {
-        if !is_vowel(c) && check {
-            end.push(c)
+        if (!found_vowel && !is_vowel(c)) || c == 'u' && last == Some('q') {
+            end.push(c);
         } else {
-            check = false;
-            s.push(c)
+            found_vowel = true;
+            start.push(c);
         }
+        last = Some(c)
     }
-    s.push_str(&end);
-    s.push_str("ay");
-    s
+
+    start + &end + "ay"
 }
 
 pub fn is_vowel(c: char) -> bool {
-    for vowel in ['a', 'e' , 'i', 'o', 'u'] {
-        if c == vowel {
-            return true;
-        }
-    }
-    false
+    matches!(c, 'a' | 'e' | 'i' | 'o' | 'u')
 }
+
 
 #[cfg(test)]
 mod tests {
@@ -33,5 +31,6 @@ mod tests {
         assert_eq!(pig_latin(&String::from("igloo")), "iglooay".to_string());
         assert_eq!(pig_latin(&String::from("apple")), "appleay".to_string());
         assert_eq!(pig_latin(&String::from("hello")), "ellohay".to_string());
+        assert_eq!(pig_latin(&String::from("square")), "aresquay".to_string());
     }
 }
