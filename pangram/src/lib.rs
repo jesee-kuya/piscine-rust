@@ -22,7 +22,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        let result = is_pangram("Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.");
+        assert_eq!(result, false);
     }
 }
