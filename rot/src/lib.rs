@@ -9,14 +9,11 @@ pub fn rotate(input: &str, key: i8) -> String {
     }
 
     for c in input.chars() {
-        if c >= 'a' && c <= 'z' {
-            let ch = (((c as u8 - 'a' as u8) as i8 + i) % 26) as u8 + 'a' as u8;
-            s.push(ch as char)
-        } else if c >= 'A' && c <= 'Z' {
-            let ch = (((c as u8 - 'A' as u8) as i8 + i) % 26) as u8 + 'A' as u8;
-            s.push(ch as char)
-        } else {
-            s.push(c)
+        match c {
+            'a'..='z' => s.push(((((c as u8 - 'a' as u8) as i8 + i) % 26) as u8 + 'a' as u8) as char),
+            'A'..='Z' => s.push(((((c as u8 - 'A' as u8) as i8 + i) % 26) as u8 + 'A' as u8) as char),
+            _ => s.push(c)
+
         }
     }
     s
