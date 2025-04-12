@@ -1,24 +1,34 @@
-pub fn scytale_cipher(message: String, mut i: u32) -> String {
+pub fn scytale_cipher(message: String, i: u32) -> String {
     let mut s = String::new();
-    let mut sz = message.chars().count();
+    let mut arr = vec![];
+    let mut bigarr = vec![];
+
     for c in message.chars() {
-        match message.chars().nth(i.try_into().unwrap()) {
-            Some(ch) => {
-                s.push(c);
-                s.push(ch);
-                sz -= 2;
-            },
-            None => {
-                s.push(c);
-                s.push(' ');
-                sz -= 1;
+        arr.push(c);
+
+        if arr.len() as u32 == i  {
+            bigarr.push(arr);
+            arr = vec![];
+        }
+    }
+
+    if arr.len() != 0 {
+        bigarr.push(arr);
+    }
+
+    let mut n = 0;
+
+    while n < i {
+        for val in &bigarr {
+            if  n < val.len() as u32 {
+                s.push(val[n as usize])
+            } else {
+                s.push(' ')
             }
         }
-        if sz <= 0 {
-            break
-        }
-        i += 1;
+        n += 1
     }
+
     s.trim().to_string()
 }
 
