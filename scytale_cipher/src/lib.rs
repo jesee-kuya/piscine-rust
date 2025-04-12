@@ -1,6 +1,6 @@
 pub fn scytale_cipher(message: String, mut i: u32) -> String {
     let mut s = String::new();
-    let mut sz = message.len();
+    let mut sz = message.chars().count();
     for c in message.chars() {
         match message.chars().nth(i.try_into().unwrap()) {
             Some(ch) => {
