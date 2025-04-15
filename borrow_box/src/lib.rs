@@ -29,9 +29,14 @@ impl GameSession {
     }
 
     pub fn update_score(&mut self, user_name: String) {
-        let val = self.p1.0 == user_name;
-        if !(self.p1.1 > self.nb_games / 2) && !(self.p2.1 > self.nb_games / 2) && (self.p1.1 + self.p2.1 < self.nb_games) {
-            if val == true {
+        let is_p1 = self.p1.0 == user_name;
+        let required_to_win = (self.nb_games / 2) + 1;
+        let p1_has_won = self.p1.1 >= required_to_win;
+        let p2_has_won = self.p2.1 >= required_to_win;
+        let games_remaining = (self.p1.1 + self.p2.1) < self.nb_games;
+    
+        if !p1_has_won && !p2_has_won && games_remaining {
+            if is_p1 {
                 self.p1.1 += 1;
             } else {
                 self.p2.1 += 1;
@@ -72,4 +77,104 @@ mod tests {
         assert_eq!(game.read_winner(), ("Joao".to_string(), 3));
 
     }
-}
+ 
+        #[test]
+        fn test_read_winner_tied() {
+            let session = GameSession {
+                id: 1,
+                p1: ("Alice".to_string(), 2),
+                p2: ("Bob".to_string(), 2),
+                nb_games: 5,
+            };
+            assert_eq!(session.read_winner(), ("Same score! tied".to_string(), 2));
+        }
+    
+        #[test]
+        fn test_read_winner_p1_leading() {
+            let session = GameSession {
+                id: 1,
+                p1: ("Alice".to_string(), 3),
+                p2: ("Bob".to_string(), 2),
+                nb_games: 5,
+            };
+            assert_eq!(session.read_winner(), ("Alice".to_string(), 3));
+        }
+    
+        #[test]
+        fn test_read_winner_p2_leading() {
+            let session = GameSession {
+                id: 1,
+                p1: ("Alice".to_string(), 1),
+                p2: ("Bob".to_string(), 2),
+                nb_games: 3,
+            };
+            assert_eq!(session.read_winner(), ("Bob".to_string(), 2));
+        }
+    
+        // Tests for update_score
+        #[test]
+        fn test_update_score_increment_p1() {
+            let mut session = GameSession {
+                id: 1,
+                p1: ("Alice".to_string(), 0),
+                p2: ("Bob".to_string(), 0),
+                nb_games: 3,
+            };
+            session.update_score("Alice".to_string());
+            assert_eq!(session.p1.1, 1);
+            assert_eq!(session.p2.1, 0);
+        }
+    
+        #[test]
+        fn test_update_score_blocked_clinched() {
+            let mut session = GameSession {
+                id: 1,
+                p1: ("Alice".to_string(), 3),
+                p2: ("Bob".to_string(), 0),
+                nb_games: 5,
+            };
+            session.update_score("Alice".to_string());
+            assert_eq!(session.p1.1, 3);
+            assert_eq!(session.p2.1, 0);
+        }
+    
+        #[test]
+        fn test_update_score_blocked_sum_reached() {
+            let mut session = GameSession {
+                id: 1,
+                p1: ("Alice".to_string(), 3),
+                p2: ("Bob".to_string(), 2),
+                nb_games: 5,
+            };
+            session.update_score("Alice".to_string());
+            assert_eq!(session.p1.1, 3);
+            assert_eq!(session.p2.1, 2);
+        }
+    
+        #[test]
+        fn test_update_score_allow_reaching_nb_games() {
+            let mut session = GameSession {
+                id: 1,
+                p1: ("Alice".to_string(), 0),
+                p2: ("Bob".to_string(), 0),
+                nb_games: 2,
+            };
+            session.update_score("Alice".to_string());
+            session.update_score("Alice".to_string());
+            assert_eq!(session.p1.1, 2);
+            assert_eq!(session.p2.1, 0);
+        }
+    
+        // Test for delete
+        #[test]
+        fn test_delete() {
+            let session = GameSession {
+                id: 42,
+                p1: ("A".to_string(), 0),
+                p2: ("B".to_string(), 0),
+                nb_games: 1,
+            };
+            let result = session.delete();
+            assert_eq!(result, "game deleted: id -> 42");
+        }
+    }
