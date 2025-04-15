@@ -29,18 +29,16 @@ impl GameSession {
     }
 
     pub fn update_score(&mut self, user_name: String) {
-        let is_p1 = self.p1.0 == user_name;
-        let required_to_win = (self.nb_games / 2) + 1;
-        let p1_has_won = self.p1.1 >= required_to_win;
-        let p2_has_won = self.p2.1 >= required_to_win;
-        let games_remaining = (self.p1.1 + self.p2.1) < self.nb_games;
-    
-        if !p1_has_won && !p2_has_won && games_remaining {
-            if is_p1 {
-                self.p1.1 += 1;
-            } else {
-                self.p2.1 += 1;
-            }
+        let max_score = (self.nb_games / 2) + 1;
+
+        if self.p1.1 >= max_score || self.p2.1 >= max_score {
+            return;
+        }
+
+        if self.p1.0 == user_name {
+            self.p1.1 += 1;
+        } else if self.p2.0 == user_name {
+            self.p2.1 += 1;
         }
     }
 
