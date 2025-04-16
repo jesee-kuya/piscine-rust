@@ -1,15 +1,11 @@
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct WorkEnvironment {
     pub grade: Link,
 }
 
-#[derive(Debug)]
-pub enum Link {
-    Empty,
-    More(Box<Worker>),
-}
+pub type Link = Option<Box<Worker>>;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Worker {
     pub role: String,
     pub name: String,
@@ -18,33 +14,53 @@ pub struct Worker {
 
 impl WorkEnvironment {
     pub fn new() -> WorkEnvironment {
-        WorkEnvironment { grade: Link::Empty }
+        Self { grade: None }
     }
-
     pub fn add_worker(&mut self, role: String, name: String) {
-        let new_worker = Worker {
+        let worker = Worker {
             role,
             name,
-            next: std::mem::replace(&mut self.grade, Link::Empty),
+            next: self.grade.take(),
         };
-        self.grade = Link::More(Box::new(new_worker));
+
+        self.grade = Some(Box::new(worker))
     }
 
     pub fn remove_worker(&mut self) -> Option<String> {
-        match std::mem::replace(&mut self.grade, Link::Empty) {
-            Link::Empty => None,
-            Link::More(boxed_worker) => {
-                let Worker { name, next, .. } = *boxed_worker;
-                self.grade = next;
-                Some(name)
-            }
-        }
+        self.grade.take().map(|worker| {
+            self.grade = worker.next;
+            worker.name
+        })
     }
-
     pub fn last_worker(&self) -> Option<(String, String)> {
-        match &self.grade {
-            Link::Empty => None,
-            Link::More(worker) => Some((worker.name.clone(), worker.role.clone())),
-        }
+        self.grade.as_ref().map(|worker| (worker.name.clone(), worker.role.clone()))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        let mut list = WorkEnvironment::new();
+        assert_eq!(list, WorkEnvironment { grade: None });
+        list.add_worker(String::from("CEO"), String::from("Marie"));
+        assert_eq!(list, WorkEnvironment { grade: Some( Box::new(Worker{
+            role: "CEO".to_string(),
+            name: "Marie".to_string(),
+            next: None,
+        }))});
+        list.add_worker(String::from("Manager"), String::from("Monica"));
+        list.add_worker(String::from("Normal Worker"), String::from("Ana"));
+        list.add_worker(String::from("Normal Worker"), String::from("Alice"));
+        list.remove_worker();
+        list.remove_worker();
+        list.remove_worker();
+        assert_eq!(list, WorkEnvironment { grade: Some( Box::new(Worker{
+            role: "CEO".to_string(),
+            name: "Marie".to_string(),
+            next: None,
+        }))});
     }
 }
