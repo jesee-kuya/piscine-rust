@@ -7,34 +7,26 @@ pub struct ThreeDVector<T> {
 
 use std::ops::{Add, Sub};
 
-// Implement Add for ThreeDVector<T> where T supports Add and Copy
-impl<T> Add for ThreeDVector<T>
-where
-    T: Add<Output = T> + Copy,
-{
+impl<T: Add<Output = T>> Add for ThreeDVector<T> {
     type Output = Self;
 
-    fn add(self, other: Self) -> Self {
+    fn add(self, rhs: Self) -> Self::Output {
         ThreeDVector {
-            i: self.i + other.i,
-            j: self.j + other.j,
-            k: self.k + other.k,
+            i: self.i + rhs.i,
+            j: self.j + rhs.j,
+            k: self.k + rhs.k,
         }
     }
 }
 
-// Implement Sub for ThreeDVector<T> where T supports Sub and Copy
-impl<T> Sub for ThreeDVector<T>
-where
-    T: Sub<Output = T> + Copy,
-{
+impl<T: Sub<Output = T>> Sub for ThreeDVector<T> {
     type Output = Self;
 
-    fn sub(self, other: Self) -> Self {
+    fn sub(self, rhs: Self) -> Self::Output {
         ThreeDVector {
-            i: self.i - other.i,
-            j: self.j - other.j,
-            k: self.k - other.k,
+            i: self.i - rhs.i,
+            j: self.j - rhs.j,
+            k: self.k - rhs.k,
         }
     }
 }
