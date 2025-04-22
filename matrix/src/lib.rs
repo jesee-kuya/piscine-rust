@@ -1,5 +1,5 @@
 pub mod scalar;
-#[derive (Debug, Clone)]
+#[derive (Debug, Clone, PartialEq)]
 pub struct Matrix<T>(pub Vec<Vec<T>>);
 
 use scalar::Scalar;
