@@ -13,7 +13,7 @@ impl Iterator for Collatz {
         let current = self.v;
         if current == 1 {
             self.v = 0;
-            Some(current)
+            Some(Collatz{v: current})
         } else {
             let next_v = if current % 2 == 0 {
                 current / 2
@@ -21,7 +21,7 @@ impl Iterator for Collatz {
                 3 * current + 1
             };
             self.v = next_v;
-            Some(current)
+            Some(Collatz{v: current})
         }
     }
 }
