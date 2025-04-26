@@ -4,25 +4,19 @@ pub struct Collatz {
 }
 
 impl Iterator for Collatz {
-    type Item = Collatz;
+    type Item = u64;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.v == 0 {
+        if self.v == 0 || self.v == 1 {
             return None;
         }
         let current = self.v;
-        if current == 1 {
-            self.v = 0;
-            Some(Collatz{v: current})
+        self.v = if current % 2 == 0 {
+            current / 2
         } else {
-            let next_v = if current % 2 == 0 {
-                current / 2
-            } else {
-                3 * current + 1
-            };
-            self.v = next_v;
-            Some(Collatz{v: current})
-        }
+            3 * current + 1
+        };
+        Some(current)
     }
 }
 
@@ -36,7 +30,7 @@ pub fn collatz(n: u64) -> usize {
     if n == 0 || n == 1 {
         return 0;
     }
-    Collatz::new(n).count() - 1
+    Collatz::new(n).count()
 }
 
 #[cfg(test)]
